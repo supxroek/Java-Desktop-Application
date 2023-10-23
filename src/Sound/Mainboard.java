@@ -1,16 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Sound;
 
 import java.awt.Color;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import jaco.mp3.player.MP3Player;
 
 /**
  *
@@ -18,22 +13,28 @@ import javax.swing.JPanel;
  */
 public class Mainboard extends javax.swing.JFrame {
 
-    Playlist pl = new Playlist();
-    ArrayList updateList = new ArrayList();
-    javazoom.jl.player.Player player;
+    private MP3Player player;
+    private Playlist pl;
+    private DefaultListModel<String> listModel;
+    private boolean isPlaying = false;
+    private int isPause = 0;
+    private int isCheck = 0;
+    private File currentlyPlayingFile = null;
 
     public Mainboard() {
         initComponents();
+        pl = new Playlist();
+        listModel = new DefaultListModel<>();
+        Music_list.setModel(listModel);
     }
 
     void updateList() {
-        updateList = pl.getListSong();
-        DefaultListModel dm = new DefaultListModel();
+        listModel.clear();
+        ArrayList<File> updateList = pl.getSongList();
         for (int i = 0; i < updateList.size(); i++) {
             int j = i + 1;
-            dm.add(i, j + " | " + ((File) updateList.get(i)).getName());
+            listModel.addElement(j + " | " + updateList.get(i).getName());
         }
-        Music_list.setModel(dm);
     }
 
     void add() {
@@ -41,41 +42,65 @@ public class Mainboard extends javax.swing.JFrame {
         updateList();
     }
 
-    void open() {
-        pl.openPls(this);
-        updateList();
-    }
+    void playSelectedSong() {
+        int selectedIndex = Music_list.getSelectedIndex();
+        if (selectedIndex != -1) {
+            File selectedSongFile = pl.getSongList().get(selectedIndex);
 
-    File play;
-    static int n = 0;
-
-   void play_music() {
-        if (play_btn.isSelected()) {
-            if (n == 0) {
-                try {
-                    int ml = Music_list.getSelectedIndex();
-                    play = (File) this.updateList.get(ml);
-                    FileInputStream fs = new FileInputStream(play);
-                    BufferedInputStream bs = new BufferedInputStream(fs);
-                    player = new javazoom.jl.player.Player(bs);
-                    n = 1;
-                } catch (Exception e) {
-                    System.out.println("Problem playing file");
-                    System.out.println(e);
-                }
-
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            player.play();
-                        } catch (Exception e) {
+            if (isCheck != 1) {
+                if (isPause != 1) {
+                    if (isPlaying) {
+                        if (currentlyPlayingFile != null && !selectedSongFile.equals(currentlyPlayingFile)) {
+                            player.stop();
                         }
                     }
-                }.start();
+
+                    player = new MP3Player(selectedSongFile);
+                    player.play();
+
+                    currentlyPlayingFile = selectedSongFile;
+                    isPlaying = true;
+                    isCheck = 1;
+                } else {
+                    if (player.isPaused()) {
+                        player.play();
+                        isPause = 0;
+                    }
+                }
             }
-        } else {
-            player.close();
+        }
+    }
+
+    void changeSong() {
+        int selectedIndex = Music_list.getSelectedIndex();
+        if (selectedIndex != -1) {
+            File selectedSongFile = pl.getSongList().get(selectedIndex);
+
+            if (currentlyPlayingFile != null && !selectedSongFile.equals(currentlyPlayingFile)) {
+                if (isPlaying) {
+                    player.stop(); // หยุดเล่นเพลงที่กำลังเล่น
+                    isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
+                    isPause = 0; // รีเซ็ต isPause
+                }
+            }
+        }
+        playSelectedSong(); // เรียกฟังก์ชันเล่นเพลงที่ผู้ใช้เลือก
+    }
+
+    void stop() {
+        int selectedIndex = Music_list.getSelectedIndex();
+        if (selectedIndex != -1) {
+            File selectedSongFile = pl.getSongList().get(selectedIndex);
+
+            if (currentlyPlayingFile != null && !selectedSongFile.equals(currentlyPlayingFile)) {
+                player.stop();
+                isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
+                isPause = 0; // รีเซ็ต isPause
+            } else {
+                player.pause();
+                isCheck = 0;
+                isPause = 1;
+            }
         }
     }
 
@@ -86,6 +111,8 @@ public class Mainboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         Slide_home = new javax.swing.JPanel();
         Slide_music = new javax.swing.JPanel();
@@ -99,16 +126,15 @@ public class Mainboard extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jSlider1 = new javax.swing.JSlider();
         jPanel8 = new javax.swing.JPanel();
         bg_play = new javax.swing.JPanel();
-        play_btn = new javax.swing.JToggleButton();
+        play_btn = new javax.swing.JLabel();
         bg_next = new javax.swing.JPanel();
         Next_btn = new javax.swing.JLabel();
         bg_back = new javax.swing.JPanel();
         Back_btn = new javax.swing.JLabel();
-        bg_replay = new javax.swing.JPanel();
-        Replay_btn = new javax.swing.JLabel();
+        bg_stop = new javax.swing.JPanel();
+        Stop_btn = new javax.swing.JLabel();
         bg_random = new javax.swing.JPanel();
         Random_btn = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -119,6 +145,8 @@ public class Mainboard extends javax.swing.JFrame {
         bg_upload = new javax.swing.JPanel();
         upload = new javax.swing.JLabel();
         Music_page = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        List_ms = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -149,12 +177,38 @@ public class Mainboard extends javax.swing.JFrame {
             }
         });
 
+        jPanel9.setBackground(new java.awt.Color(137, 45, 182));
+        jPanel9.setPreferredSize(new java.awt.Dimension(150, 50));
+
+        jLabel7.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("SOUND SCRATCH");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(820, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 670, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -164,6 +218,7 @@ public class Mainboard extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addComponent(jLabel1)
                 .addContainerGap(13, Short.MAX_VALUE))
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -341,20 +396,23 @@ public class Mainboard extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(237, 241, 250));
         jPanel6.setPreferredSize(new java.awt.Dimension(645, 100));
 
-        jSlider1.setPreferredSize(new java.awt.Dimension(500, 20));
-
         jPanel8.setBackground(new java.awt.Color(237, 241, 250));
 
         bg_play.setBackground(new java.awt.Color(237, 241, 250));
         bg_play.setPreferredSize(new java.awt.Dimension(40, 40));
 
-        play_btn.setBackground(new java.awt.Color(237, 241, 250));
+        play_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         play_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play-button.png"))); // NOI18N
-        play_btn.setBorder(null);
-        play_btn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause.png"))); // NOI18N
-        play_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                play_btnActionPerformed(evt);
+        play_btn.setPreferredSize(new java.awt.Dimension(40, 40));
+        play_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                play_btnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                play_btnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                play_btnMouseExited(evt);
             }
         });
 
@@ -362,11 +420,15 @@ public class Mainboard extends javax.swing.JFrame {
         bg_play.setLayout(bg_playLayout);
         bg_playLayout.setHorizontalGroup(
             bg_playLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(play_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bg_playLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(play_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         bg_playLayout.setVerticalGroup(
             bg_playLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(play_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bg_playLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(play_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         bg_next.setBackground(new java.awt.Color(237, 241, 250));
@@ -376,9 +438,6 @@ public class Mainboard extends javax.swing.JFrame {
         Next_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/next.png"))); // NOI18N
         Next_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Next_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Next_btnMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 Next_btnMouseEntered(evt);
             }
@@ -409,9 +468,6 @@ public class Mainboard extends javax.swing.JFrame {
         Back_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/previous.png"))); // NOI18N
         Back_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Back_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Back_btnMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 Back_btnMouseEntered(evt);
             }
@@ -433,34 +489,34 @@ public class Mainboard extends javax.swing.JFrame {
             .addComponent(Back_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        bg_replay.setBackground(new java.awt.Color(237, 241, 250));
-        bg_replay.setPreferredSize(new java.awt.Dimension(40, 40));
+        bg_stop.setBackground(new java.awt.Color(237, 241, 250));
+        bg_stop.setPreferredSize(new java.awt.Dimension(40, 40));
 
-        Replay_btn.setBackground(new java.awt.Color(237, 241, 250));
-        Replay_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Replay_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loop-arrow.png"))); // NOI18N
-        Replay_btn.setPreferredSize(new java.awt.Dimension(40, 40));
-        Replay_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        Stop_btn.setBackground(new java.awt.Color(237, 241, 250));
+        Stop_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Stop_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause.png"))); // NOI18N
+        Stop_btn.setPreferredSize(new java.awt.Dimension(40, 40));
+        Stop_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Replay_btnMouseClicked(evt);
+                Stop_btnMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Replay_btnMouseEntered(evt);
+                Stop_btnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Replay_btnMouseExited(evt);
+                Stop_btnMouseExited(evt);
             }
         });
 
-        javax.swing.GroupLayout bg_replayLayout = new javax.swing.GroupLayout(bg_replay);
-        bg_replay.setLayout(bg_replayLayout);
-        bg_replayLayout.setHorizontalGroup(
-            bg_replayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Replay_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout bg_stopLayout = new javax.swing.GroupLayout(bg_stop);
+        bg_stop.setLayout(bg_stopLayout);
+        bg_stopLayout.setHorizontalGroup(
+            bg_stopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Stop_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        bg_replayLayout.setVerticalGroup(
-            bg_replayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Replay_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        bg_stopLayout.setVerticalGroup(
+            bg_stopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Stop_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         bg_random.setBackground(new java.awt.Color(237, 241, 250));
@@ -470,9 +526,6 @@ public class Mainboard extends javax.swing.JFrame {
         Random_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/random.png"))); // NOI18N
         Random_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Random_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Random_btnMouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 Random_btnMouseEntered(evt);
             }
@@ -507,8 +560,8 @@ public class Mainboard extends javax.swing.JFrame {
                 .addComponent(bg_play, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bg_next, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bg_replay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addComponent(bg_stop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(88, 88, 88))
         );
         jPanel8Layout.setVerticalGroup(
@@ -518,29 +571,23 @@ public class Mainboard extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(bg_random, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(bg_replay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bg_stop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(bg_back, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(bg_play, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(bg_next, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(72, Short.MAX_VALUE))
             .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(32, 32, 32)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -619,15 +666,21 @@ public class Mainboard extends javax.swing.JFrame {
 
         Music_page.setBackground(new java.awt.Color(255, 255, 255));
 
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setBorder(null);
+
+        List_ms.setBorder(null);
+        jScrollPane2.setViewportView(List_ms);
+
         javax.swing.GroupLayout Music_pageLayout = new javax.swing.GroupLayout(Music_page);
         Music_page.setLayout(Music_pageLayout);
         Music_pageLayout.setHorizontalGroup(
             Music_pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
         Music_pageLayout.setVerticalGroup(
             Music_pageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 349, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
         );
 
         Table_page.addTab("tab2", Music_page);
@@ -750,15 +803,15 @@ public class Mainboard extends javax.swing.JFrame {
         changecoler(bg_back, new Color(237, 241, 250));
     }//GEN-LAST:event_Back_btnMouseExited
 
-    private void Replay_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Replay_btnMouseEntered
+    private void Stop_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseEntered
         // TODO add your handling code here:
-        changecoler(bg_replay, new Color(225, 225, 248));
-    }//GEN-LAST:event_Replay_btnMouseEntered
+        changecoler(bg_stop, new Color(225, 225, 248));
+    }//GEN-LAST:event_Stop_btnMouseEntered
 
-    private void Replay_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Replay_btnMouseExited
+    private void Stop_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseExited
         // TODO add your handling code here:
-        changecoler(bg_replay, new Color(237, 241, 250));
-    }//GEN-LAST:event_Replay_btnMouseExited
+        changecoler(bg_stop, new Color(237, 241, 250));
+    }//GEN-LAST:event_Stop_btnMouseExited
 
     private void Random_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Random_btnMouseEntered
         // TODO add your handling code here:
@@ -770,29 +823,25 @@ public class Mainboard extends javax.swing.JFrame {
         changecoler(bg_random, new Color(237, 241, 250));
     }//GEN-LAST:event_Random_btnMouseExited
 
+    private void play_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseEntered
+        changecoler(bg_play, new Color(225, 225, 248));
+    }//GEN-LAST:event_play_btnMouseEntered
+
+    private void play_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseExited
+        changecoler(bg_play, new Color(237, 241, 250));
+    }//GEN-LAST:event_play_btnMouseExited
+
     private void uploadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uploadMouseClicked
         add();
     }//GEN-LAST:event_uploadMouseClicked
 
-    private void Next_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Next_btnMouseClicked
+    private void play_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseClicked
+        changeSong();
+    }//GEN-LAST:event_play_btnMouseClicked
 
-    }//GEN-LAST:event_Next_btnMouseClicked
-
-    private void Back_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Back_btnMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Back_btnMouseClicked
-
-    private void Replay_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Replay_btnMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Replay_btnMouseClicked
-
-    private void Random_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Random_btnMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Random_btnMouseClicked
-
-    private void play_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_play_btnActionPerformed
-        play_music();
-    }//GEN-LAST:event_play_btnActionPerformed
+    private void Stop_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseClicked
+        stop();
+    }//GEN-LAST:event_Stop_btnMouseClicked
 
     /**
      * @param args the command line arguments
@@ -840,13 +889,14 @@ public class Mainboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Back_btn;
     private javax.swing.JPanel Home_page;
+    private javax.swing.JList<String> List_ms;
     private javax.swing.JList<String> Music_list;
     private javax.swing.JPanel Music_page;
     private javax.swing.JLabel Next_btn;
     private javax.swing.JLabel Random_btn;
-    private javax.swing.JLabel Replay_btn;
     private javax.swing.JPanel Slide_home;
     private javax.swing.JPanel Slide_music;
+    private javax.swing.JLabel Stop_btn;
     private javax.swing.JTabbedPane Table_page;
     private javax.swing.JPanel bg_Music;
     private javax.swing.JPanel bg_back;
@@ -854,7 +904,7 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JPanel bg_next;
     private javax.swing.JPanel bg_play;
     private javax.swing.JPanel bg_random;
-    private javax.swing.JPanel bg_replay;
+    private javax.swing.JPanel bg_stop;
     private javax.swing.JPanel bg_upload;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -862,6 +912,7 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -870,9 +921,10 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSlider jSlider1;
-    private javax.swing.JToggleButton play_btn;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel play_btn;
     private javax.swing.JLabel upload;
     // End of variables declaration//GEN-END:variables
 }

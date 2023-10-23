@@ -1,93 +1,52 @@
 package Sound;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JFileChooser;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 public class Playlist {
 
-    JFileChooser fc = new JFileChooser();
-    ArrayList ls = new ArrayList();
+    private JFileChooser fileChooser;
+    private ArrayList<File> songList;
 
-    void add(JFrame frame) {
-        fc.setMultiSelectionEnabled(true);
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int fileValid = fc.showOpenDialog(frame);
-        if (fileValid == javax.swing.JFileChooser.CANCEL_OPTION) {
+    public Playlist() {
+        fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(true);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        songList = new ArrayList<>();
+    }
+
+    public void add(JFrame frame) {
+        int fileValid = fileChooser.showOpenDialog(null); // Pass null as parent component to open the dialog.
+        if (fileValid == JFileChooser.CANCEL_OPTION) {
             return;
-        } else if (fileValid == javax.swing.JFileChooser.APPROVE_OPTION) {
-            File dir = fc.getSelectedFile();
+        } else if (fileValid == JFileChooser.APPROVE_OPTION) {
+            File dir = fileChooser.getSelectedFile();
             File[] files = dir.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
                     return name.endsWith(".mp3");
                 }
             });
-            ls.addAll(Arrays.asList(files));
-        }
-    }
-
-    ArrayList getListSong() {
-        return ls;
-    }
-    
-//save playlist
-    FileOutputStream fos;
-    ObjectOutputStream oos;
-
-    public void saveAsPlaylist(JFrame frame) {
-        fc.setMultiSelectionEnabled(true);
-        int Valid = fc.showOpenDialog(frame);
-        if (Valid == javax.swing.JFileChooser.CANCEL_OPTION) {
-            return;
-        } else if (Valid == javax.swing.JFileChooser.APPROVE_OPTION) {
-            File[] pls = fc.getSelectedFiles();
-            try {
-                fos = new FileOutputStream(pls + ".tgr");
-                oos = new ObjectOutputStream(fos);
-
-                for (int i = 0; i < ls.size(); i++) {
-                    File tmp = (File) ls.get(i);
-                    oos.writeObject(tmp);
+            if (files != null) {
+                for (File file : files) {
+                    songList.add(file);
                 }
-                oos.close();
-
-            } catch (Exception e) {
             }
         }
     }
 
-    FileInputStream fis;
-    ObjectInputStream ois;
-
-    public void openPls(JFrame frame) {
-        fc.setMultiSelectionEnabled(false);
-        int Valid = fc.showOpenDialog(frame);
-        if (Valid == javax.swing.JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-        if (Valid == javax.swing.JFileChooser.APPROVE_OPTION) {
-            File pls = fc.getSelectedFile();
-            try {
-                fis = new FileInputStream(pls);
-                ois = new ObjectInputStream(fis);
-                File tmp;
-                while ((tmp = (File) ois.readObject()) != null) {
-                    ls.add(tmp);
-                }
-                if ((tmp = (File) ois.readObject()) == null) {
-                    ls.isEmpty();
-                }
-                ois.close();
-            } catch (Exception e) {
-            }
-        }
+    public ArrayList<File> getSongList() {
+        return songList;
     }
+
+    public String getSongFilePath(int index) {
+        if (index >= 0 && index < songList.size()) {
+            return songList.get(index).getAbsolutePath();
+        }
+        return null; // หรือสามารถจัดการเป็นอย่างอื่นที่คุณต้องการ
+    }
+
 }
