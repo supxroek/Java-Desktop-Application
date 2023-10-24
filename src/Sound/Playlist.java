@@ -42,11 +42,4 @@ public class Playlist {
         return songList;
     }
 
-    public String getSongFilePath(int index) {
-        if (index >= 0 && index < songList.size()) {
-            return songList.get(index).getAbsolutePath();
-        }
-        return null; // หรือสามารถจัดการเป็นอย่างอื่นที่คุณต้องการ
-    }
-
 }
