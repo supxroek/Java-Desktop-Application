@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import jaco.mp3.player.MP3Player;
-import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,8 +14,8 @@ import java.util.logging.Logger;
 public class Mainboard extends javax.swing.JFrame {
 
     private MP3Player player;
-    private Playlist pl;
-    private DefaultListModel<String> listModel;
+    private final Playlist pl;
+    private final DefaultListModel<String> listModel;
     private boolean isPlaying = false;
     private int isPause = 0;
     private int isCheck = 0;
@@ -117,16 +113,16 @@ public class Mainboard extends javax.swing.JFrame {
     }
 
     void playRandomSong() {
+        int randomIndex = (int) (Math.random() * pl.getSongList().size());
         if (!pl.getSongList().isEmpty()) {
-            int randomIndex = (int) (Math.random() * pl.getSongList().size());
             if (isPlaying) {
                 player.stop();
             }
             Music_list.setSelectedIndex(randomIndex);
-            playSelectedSong(randomIndex);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
             isPause = 0; // รีเซ็ต isPause
         }
+        playSelectedSong(randomIndex);
     }
 
     void playNextSong() {
@@ -138,8 +134,6 @@ public class Mainboard extends javax.swing.JFrame {
             isPause = 0; // รีเซ็ต isPause
         }
         playSelectedSong(selectedIndex + 1);
-        checkAction(bg_play, bg_stop, 1);
-        checkExited = true;
     }
 
     void playPreviousSong() {
@@ -151,8 +145,6 @@ public class Mainboard extends javax.swing.JFrame {
             isPause = 0; // รีเซ็ต isPause
         }
         playSelectedSong(selectedIndex - 1);
-        checkAction(bg_play, bg_stop, 1);
-        checkExited = true;
     }
 
     @SuppressWarnings("unchecked")
@@ -763,18 +755,6 @@ public class Mainboard extends javax.swing.JFrame {
         }
     }
 
-    private boolean checkExited = false;
-
-    public void checkAction(JPanel p1, JPanel p2, int n_check) {
-        if (n_check == 1) {
-            p1.setBackground(new Color(193, 193, 213));
-            p2.setBackground(new Color(237, 241, 250));
-        } else {
-            p1.setBackground(new Color(237, 241, 250));
-            p2.setBackground(new Color(193, 193, 213));
-        }
-    }
-
     private int xMouse, yMouse;
     private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
         // TODO add your handling code here:
@@ -853,46 +833,27 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_Back_btnMouseExited
 
     private void Stop_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseEntered
-        if (checkExited) {
-            changecoler(bg_stop, new Color(225, 225, 248));
-        } else {
-            checkExited = true;
-        }
+        changecoler(bg_stop, new Color(225, 225, 248));
     }//GEN-LAST:event_Stop_btnMouseEntered
 
     private void Stop_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseExited
-        if (!checkExited) {
-            changecoler(bg_stop, new Color(237, 241, 250));
-        } else {
-            checkExited = false;
-        }
+        changecoler(bg_stop, new Color(237, 241, 250));
     }//GEN-LAST:event_Stop_btnMouseExited
 
     private void Random_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Random_btnMouseEntered
-        // TODO add your handling code here:
         changecoler(bg_random, new Color(225, 225, 248));
     }//GEN-LAST:event_Random_btnMouseEntered
 
     private void Random_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Random_btnMouseExited
-        // TODO add your handling code here:
         changecoler(bg_random, new Color(237, 241, 250));
     }//GEN-LAST:event_Random_btnMouseExited
 
     private void play_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseEntered
-        if (checkExited) {
-            changecoler(bg_play, new Color(225, 225, 248));
-        } else {
-            checkExited = true;
-            changecoler(bg_play, new Color(225, 225, 248));
-        }
+        changecoler(bg_play, new Color(225, 225, 248));
     }//GEN-LAST:event_play_btnMouseEntered
 
     private void play_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseExited
-        if (!checkExited) {
-            changecoler(bg_play, new Color(237, 241, 250));
-        } else {
-            checkExited = false;
-        }
+        changecoler(bg_play, new Color(237, 241, 250));
     }//GEN-LAST:event_play_btnMouseExited
 
     private void uploadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uploadMouseClicked
@@ -901,14 +862,10 @@ public class Mainboard extends javax.swing.JFrame {
 
     private void play_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseClicked
         changeSong();
-        checkAction(bg_play, bg_stop, 1);
-        checkExited = true;
     }//GEN-LAST:event_play_btnMouseClicked
 
     private void Stop_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseClicked
         stop();
-        checkAction(bg_stop, bg_play, 1);
-        checkExited = true;
     }//GEN-LAST:event_Stop_btnMouseClicked
 
     private void Next_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Next_btnMouseClicked
