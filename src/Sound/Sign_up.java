@@ -316,19 +316,19 @@ public class Sign_up extends javax.swing.JFrame {
         // TODO add your handling code here:
         // ตรวจสอบว่าชื่อผู้ใช้ว่างหรือไม่
         if (New_user.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter username.");
+            JOptionPane.showMessageDialog(this, "กรุณากรอกชื่อผู้ใช้!", "คำเตือน", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // ตรวจสอบว่ารหัสผ่านว่างหรือไม่
         if (New_pass.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter password.");
+            JOptionPane.showMessageDialog(this, "กรุณากรอกรหัสผ่าน!", "คำเตือน", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // ตรวจสอบว่ารหัสผ่านตรงกันหรือไม่
         if (!New_pass.getText().equals(Conf_pass.getText())) {
-            JOptionPane.showMessageDialog(this, "Passwords do not match.");
+            JOptionPane.showMessageDialog(this, "รหัสผ่านของคุณไม่ตรงกัน!", "ข้อผิดพลาด", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -342,7 +342,7 @@ public class Sign_up extends javax.swing.JFrame {
             writer.close();
 
             // แสดงข้อความแจ้งว่าลงทะเบียนสำเร็จ
-            JOptionPane.showMessageDialog(this, "Register success.");
+            JOptionPane.showMessageDialog(this, "ลงทะเบียนสำเร็จ!", "ดีใจด้วย!", JOptionPane.INFORMATION_MESSAGE);
 
             // ปิดหน้า register
             new Login().setVisible(true);
