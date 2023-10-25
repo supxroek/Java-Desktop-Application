@@ -14,8 +14,8 @@ import jaco.mp3.player.MP3Player;
 public class Mainboard extends javax.swing.JFrame {
 
     private MP3Player player;
-    private final Playlist pl;
-    private final DefaultListModel<String> listModel;
+    private final DefaultListModel<String> listModel; // Move listModel here
+    private final Playlist pl; // Remove listModel from here
     private boolean isPlaying = false;
     private int isPause = 0;
     private int isCheck = 0;
@@ -23,23 +23,15 @@ public class Mainboard extends javax.swing.JFrame {
 
     public Mainboard() {
         initComponents();
-        pl = new Playlist();
-        listModel = new DefaultListModel<>();
+        listModel = new DefaultListModel<>(); // Initialize listModel
         Music_list.setModel(listModel);
-    }
+        pl = new Playlist(listModel); // Pass the listModel to the Playlist constructor
 
-    void updateList() {
-        listModel.clear();
-        ArrayList<File> updateList = pl.getSongList();
-        for (int i = 0; i < updateList.size(); i++) {
-            int j = i + 1;
-            listModel.addElement(j + " | " + updateList.get(i).getName());
+        // Load previously saved folder path when the user logs in
+        String savedFolderPath = pl.getSavedFolderPath();
+        if (savedFolderPath != null) {
+            Locations_list.addItem(savedFolderPath);
         }
-    }
-
-    void add() {
-        pl.add(this);
-        updateList();
     }
 
     void playSelectedSong(int play) {
@@ -158,11 +150,15 @@ public class Mainboard extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        Slide_home = new javax.swing.JPanel();
-        bg_home = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        Slide_music = new javax.swing.JPanel();
+        bg_Music = new javax.swing.JPanel();
+        Music_btn = new javax.swing.JLabel();
         bg_Logout = new javax.swing.JPanel();
         Logout_btn = new javax.swing.JLabel();
+        Slide_Logout = new javax.swing.JPanel();
+        bg_Setting = new javax.swing.JPanel();
+        Setting_btn = new javax.swing.JLabel();
+        Slide_setting = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -187,6 +183,15 @@ public class Mainboard extends javax.swing.JFrame {
         Music_list = new javax.swing.JList<>();
         bg_upload = new javax.swing.JPanel();
         upload = new javax.swing.JLabel();
+        Setting_page = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        Locations_list = new javax.swing.JComboBox<>();
+        Folder_locations = new javax.swing.JTextField();
+        Add_btn = new javax.swing.JLabel();
+        Delete_btn = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -217,7 +222,7 @@ public class Mainboard extends javax.swing.JFrame {
             }
         });
 
-        jPanel9.setBackground(new java.awt.Color(137, 45, 182));
+        jPanel9.setBackground(new java.awt.Color(62, 26, 85));
         jPanel9.setPreferredSize(new java.awt.Dimension(150, 50));
 
         jLabel7.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
@@ -242,15 +247,9 @@ public class Mainboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("_");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimize.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -258,9 +257,9 @@ public class Mainboard extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 632, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 646, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(0, 0, 0)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -280,55 +279,56 @@ public class Mainboard extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(147, 112, 219));
         jPanel3.setPreferredSize(new java.awt.Dimension(150, 450));
 
-        Slide_home.setBackground(new java.awt.Color(147, 112, 219));
-        Slide_home.setPreferredSize(new java.awt.Dimension(150, 3));
+        Slide_music.setBackground(new java.awt.Color(147, 112, 219));
+        Slide_music.setPreferredSize(new java.awt.Dimension(150, 3));
 
-        javax.swing.GroupLayout Slide_homeLayout = new javax.swing.GroupLayout(Slide_home);
-        Slide_home.setLayout(Slide_homeLayout);
-        Slide_homeLayout.setHorizontalGroup(
-            Slide_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout Slide_musicLayout = new javax.swing.GroupLayout(Slide_music);
+        Slide_music.setLayout(Slide_musicLayout);
+        Slide_musicLayout.setHorizontalGroup(
+            Slide_musicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 150, Short.MAX_VALUE)
         );
-        Slide_homeLayout.setVerticalGroup(
-            Slide_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        Slide_musicLayout.setVerticalGroup(
+            Slide_musicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 3, Short.MAX_VALUE)
         );
 
-        bg_home.setBackground(new java.awt.Color(147, 112, 219));
+        bg_Music.setBackground(new java.awt.Color(125, 95, 186));
+        bg_Music.setPreferredSize(new java.awt.Dimension(150, 50));
 
-        jLabel2.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/disc.png"))); // NOI18N
-        jLabel2.setText("MUSIC");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jLabel2.setPreferredSize(new java.awt.Dimension(39, 50));
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        Music_btn.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
+        Music_btn.setForeground(new java.awt.Color(255, 255, 255));
+        Music_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Music_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/disc.png"))); // NOI18N
+        Music_btn.setText("MUSIC");
+        Music_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        Music_btn.setPreferredSize(new java.awt.Dimension(39, 50));
+        Music_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                Music_btnMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel2MouseEntered(evt);
+                Music_btnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel2MouseExited(evt);
+                Music_btnMouseExited(evt);
             }
         });
 
-        javax.swing.GroupLayout bg_homeLayout = new javax.swing.GroupLayout(bg_home);
-        bg_home.setLayout(bg_homeLayout);
-        bg_homeLayout.setHorizontalGroup(
-            bg_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_homeLayout.createSequentialGroup()
+        javax.swing.GroupLayout bg_MusicLayout = new javax.swing.GroupLayout(bg_Music);
+        bg_Music.setLayout(bg_MusicLayout);
+        bg_MusicLayout.setHorizontalGroup(
+            bg_MusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bg_MusicLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                .addComponent(Music_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        bg_homeLayout.setVerticalGroup(
-            bg_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_homeLayout.createSequentialGroup()
+        bg_MusicLayout.setVerticalGroup(
+            bg_MusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bg_MusicLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addComponent(Music_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -337,17 +337,11 @@ public class Mainboard extends javax.swing.JFrame {
         Logout_btn.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
         Logout_btn.setForeground(new java.awt.Color(255, 255, 255));
         Logout_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Logout_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/disc.png"))); // NOI18N
+        Logout_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logout.png"))); // NOI18N
         Logout_btn.setText("LOGOUT");
         Logout_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Logout_btnMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Logout_btnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                Logout_btnMouseExited(evt);
             }
         });
 
@@ -368,27 +362,100 @@ public class Mainboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        Slide_Logout.setPreferredSize(new java.awt.Dimension(150, 3));
+
+        javax.swing.GroupLayout Slide_LogoutLayout = new javax.swing.GroupLayout(Slide_Logout);
+        Slide_Logout.setLayout(Slide_LogoutLayout);
+        Slide_LogoutLayout.setHorizontalGroup(
+            Slide_LogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+        Slide_LogoutLayout.setVerticalGroup(
+            Slide_LogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 3, Short.MAX_VALUE)
+        );
+
+        bg_Setting.setBackground(new java.awt.Color(147, 112, 219));
+        bg_Setting.setPreferredSize(new java.awt.Dimension(150, 50));
+
+        Setting_btn.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
+        Setting_btn.setForeground(new java.awt.Color(255, 255, 255));
+        Setting_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Setting_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settings.png"))); // NOI18N
+        Setting_btn.setText("SETTING");
+        Setting_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Setting_btnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Setting_btnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Setting_btnMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout bg_SettingLayout = new javax.swing.GroupLayout(bg_Setting);
+        bg_Setting.setLayout(bg_SettingLayout);
+        bg_SettingLayout.setHorizontalGroup(
+            bg_SettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bg_SettingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Setting_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        bg_SettingLayout.setVerticalGroup(
+            bg_SettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bg_SettingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Setting_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        Slide_setting.setBackground(new java.awt.Color(147, 112, 219));
+        Slide_setting.setPreferredSize(new java.awt.Dimension(150, 3));
+
+        javax.swing.GroupLayout Slide_settingLayout = new javax.swing.GroupLayout(Slide_setting);
+        Slide_setting.setLayout(Slide_settingLayout);
+        Slide_settingLayout.setHorizontalGroup(
+            Slide_settingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+        Slide_settingLayout.setVerticalGroup(
+            Slide_settingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 3, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bg_Logout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Slide_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bg_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(bg_Logout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Slide_music, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bg_Music, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slide_Logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bg_Setting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slide_setting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(bg_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Slide_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
+                .addComponent(bg_Music, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(Slide_music, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(bg_Setting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(Slide_setting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 202, Short.MAX_VALUE)
+                .addComponent(Slide_Logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(bg_Logout, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -678,7 +745,7 @@ public class Mainboard extends javax.swing.JFrame {
         Music_list.setFont(new java.awt.Font("Kanit", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(Music_list);
 
-        Home_page.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 44, 700, 330));
+        Home_page.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 44, 700, 300));
 
         upload.setFont(new java.awt.Font("Kanit", 0, 14)); // NOI18N
         upload.setForeground(new java.awt.Color(102, 102, 102));
@@ -718,6 +785,109 @@ public class Mainboard extends javax.swing.JFrame {
 
         Table_page.addTab("tab1", Home_page);
 
+        Setting_page.setLayout(new java.awt.BorderLayout());
+
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel11.setBackground(new java.awt.Color(237, 241, 250));
+
+        jLabel6.setFont(new java.awt.Font("Kanit", 0, 14)); // NOI18N
+        jLabel6.setText("Music libary locations");
+
+        Locations_list.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        Folder_locations.setFont(new java.awt.Font("Kanit", 0, 14)); // NOI18N
+        Folder_locations.setBorder(null);
+
+        Add_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Add_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add-button.png"))); // NOI18N
+        Add_btn.setPreferredSize(new java.awt.Dimension(25, 25));
+        Add_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Add_btnMouseClicked(evt);
+            }
+        });
+
+        Delete_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Delete_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/trash.png"))); // NOI18N
+        Delete_btn.setPreferredSize(new java.awt.Dimension(25, 25));
+        Delete_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Delete_btnMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Folder_locations, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .addComponent(Locations_list, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(67, 67, 67))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(Folder_locations, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Locations_list)
+                    .addComponent(Delete_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        jPanel12.setBackground(new java.awt.Color(237, 241, 250));
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(105, Short.MAX_VALUE))
+        );
+
+        Setting_page.add(jPanel10, java.awt.BorderLayout.CENTER);
+
+        Table_page.addTab("tab2", Setting_page);
+
         jPanel4.add(Table_page, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 700, 380));
 
         jPanel1.add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -747,62 +917,50 @@ public class Mainboard extends javax.swing.JFrame {
 
     public void checkslide(JPanel p1, JPanel p2, int n_check) {
         if (n_check == 1) {
-            p1.setBackground(new Color(218, 112, 214));
+            p1.setBackground(new Color(125, 95, 186));
             p2.setBackground(new Color(147, 112, 219));
         } else {
             p1.setBackground(new Color(147, 112, 219));
-            p2.setBackground(new Color(218, 112, 214));
+            p2.setBackground(new Color(125, 95, 186));
         }
     }
 
     private int xMouse, yMouse;
     private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
-        // TODO add your handling code here:
         xMouse = evt.getX();
         yMouse = evt.getY();
     }//GEN-LAST:event_jPanel2MousePressed
 
     private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
-        // TODO add your handling code here:
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         setLocation(x - xMouse, y - yMouse);
     }//GEN-LAST:event_jPanel2MouseDragged
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jLabel1MouseClicked
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
+    private void Music_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Music_btnMouseClicked
         Table_page.setSelectedComponent(Home_page);
-        checkslide(bg_home, bg_Logout, 1);
-    }//GEN-LAST:event_jLabel2MouseClicked
+        checkslide(bg_Music, bg_Setting, 1);
+    }//GEN-LAST:event_Music_btnMouseClicked
 
     private void Logout_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Logout_btnMouseClicked
         new Login().setVisible(true);
-        player.stop();
+        if (isPlaying) {
+            player.stop();
+        }
         this.dispose();
     }//GEN-LAST:event_Logout_btnMouseClicked
 
-    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
-        // TODO add your handling code here:
-        changecoler(Slide_home, new Color(218, 112, 214));
-    }//GEN-LAST:event_jLabel2MouseEntered
+    private void Music_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Music_btnMouseEntered
+        changecoler(Slide_music, new Color(242, 242, 242));
+    }//GEN-LAST:event_Music_btnMouseEntered
 
-    private void Logout_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Logout_btnMouseEntered
-
-    }//GEN-LAST:event_Logout_btnMouseEntered
-
-    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
-        // TODO add your handling code here:
-        changecoler(Slide_home, new Color(147, 112, 219));
-    }//GEN-LAST:event_jLabel2MouseExited
-
-    private void Logout_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Logout_btnMouseExited
-
-    }//GEN-LAST:event_Logout_btnMouseExited
+    private void Music_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Music_btnMouseExited
+        changecoler(Slide_music, new Color(147, 112, 219));
+    }//GEN-LAST:event_Music_btnMouseExited
 
     private void uploadMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uploadMouseEntered
         changecoler(bg_upload, new Color(224, 238, 249));
@@ -813,22 +971,18 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_uploadMouseExited
 
     private void Next_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Next_btnMouseEntered
-        // TODO add your handling code here:
         changecoler(bg_next, new Color(225, 225, 248));
     }//GEN-LAST:event_Next_btnMouseEntered
 
     private void Next_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Next_btnMouseExited
-        // TODO add your handling code here:
         changecoler(bg_next, new Color(237, 241, 250));
     }//GEN-LAST:event_Next_btnMouseExited
 
     private void Back_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Back_btnMouseEntered
-        // TODO add your handling code here:
         changecoler(bg_back, new Color(225, 225, 248));
     }//GEN-LAST:event_Back_btnMouseEntered
 
     private void Back_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Back_btnMouseExited
-        // TODO add your handling code here:
         changecoler(bg_back, new Color(237, 241, 250));
     }//GEN-LAST:event_Back_btnMouseExited
 
@@ -857,7 +1011,27 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_play_btnMouseExited
 
     private void uploadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uploadMouseClicked
-        add();
+        pl.add(this); // เรียกเมธอด add() ในคลาส Playlist
+        ArrayList<String> folderPaths = pl.getAddedFolders();  // ดึงที่อยู่โฟลเดอร์ที่เพิ่มเข้ามาจาก Playlist
+
+        for (String folderPath : folderPaths) {
+            // ตรวจสอบว่าที่อยู่โฟลเดอร์มีอยู่ใน Locations_list หรือไม่
+            boolean folderExists = false;
+            for (int i = 0; i < Locations_list.getItemCount(); i++) {
+                if (folderPath.equals(Locations_list.getItemAt(i))) {
+                    folderExists = true;
+                    break;
+                }
+            }
+
+            if (!folderExists) {
+                Locations_list.addItem(folderPath); // เพิ่มที่อยู่โฟลเดอร์ใน Locations_list
+                pl.updateList(); // อัพเดทรายการเพลง
+            } else {
+                // ที่อยู่โฟลเดอร์มีอยู่แล้ว
+                // คุณสามารถแจ้งเตือนหรือไม่ทำอะไรตามความต้องการ
+            }
+        }
     }//GEN-LAST:event_uploadMouseClicked
 
     private void play_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseClicked
@@ -880,9 +1054,52 @@ public class Mainboard extends javax.swing.JFrame {
         playRandomSong();
     }//GEN-LAST:event_Random_btnMouseClicked
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+    private void Setting_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Setting_btnMouseClicked
+        Table_page.setSelectedComponent(Setting_page);
+        checkslide(bg_Setting, bg_Music, 1);
+    }//GEN-LAST:event_Setting_btnMouseClicked
 
-    }//GEN-LAST:event_jLabel3MouseClicked
+    private void Setting_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Setting_btnMouseEntered
+        changecoler(Slide_setting, new Color(242, 242, 242));
+    }//GEN-LAST:event_Setting_btnMouseEntered
+
+    private void Setting_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Setting_btnMouseExited
+        changecoler(Slide_setting, new Color(147, 112, 219));
+    }//GEN-LAST:event_Setting_btnMouseExited
+
+    private void Add_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Add_btnMouseClicked
+        String folderPath = Folder_locations.getText(); // Assuming Folder_locations is the JTextField for folder path
+
+        // Check if the folder path already exists in the list
+        boolean folderExists = false;
+        for (int i = 0; i < Locations_list.getItemCount(); i++) {
+            if (Locations_list.getItemAt(i).equals(folderPath)) {
+                folderExists = true;
+                break;
+            }
+        }
+
+        if (!folderExists) {
+            Locations_list.addItem(folderPath);
+            pl.setDefaultFolderPath(folderPath);
+            pl.updateList();
+        }
+    }//GEN-LAST:event_Add_btnMouseClicked
+
+    private void Delete_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Delete_btnMouseClicked
+        String selectedFolder = Locations_list.getSelectedItem().toString();
+        Locations_list.removeItemAt(Locations_list.getSelectedIndex());
+
+        // Remove songs associated with the deleted folder
+        ArrayList<File> songsToRemove = new ArrayList<>();
+        for (File song : pl.getSongList()) {
+            if (song.getAbsolutePath().startsWith(selectedFolder)) {
+                songsToRemove.add(song);
+            }
+        }
+        pl.getSongList().removeAll(songsToRemove);
+        pl.updateList();
+    }//GEN-LAST:event_Delete_btnMouseClicked
 
     /**
      * @param args the command line arguments
@@ -928,30 +1145,43 @@ public class Mainboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Add_btn;
     private javax.swing.JLabel Back_btn;
+    private javax.swing.JLabel Delete_btn;
+    private javax.swing.JTextField Folder_locations;
     private javax.swing.JPanel Home_page;
+    private javax.swing.JComboBox<String> Locations_list;
     private javax.swing.JLabel Logout_btn;
+    private javax.swing.JLabel Music_btn;
     private javax.swing.JList<String> Music_list;
     private javax.swing.JLabel Next_btn;
     private javax.swing.JLabel Random_btn;
-    private javax.swing.JPanel Slide_home;
+    private javax.swing.JLabel Setting_btn;
+    private javax.swing.JPanel Setting_page;
+    private javax.swing.JPanel Slide_Logout;
+    private javax.swing.JPanel Slide_music;
+    private javax.swing.JPanel Slide_setting;
     private javax.swing.JLabel Stop_btn;
     private javax.swing.JTabbedPane Table_page;
     private javax.swing.JPanel bg_Logout;
+    private javax.swing.JPanel bg_Music;
+    private javax.swing.JPanel bg_Setting;
     private javax.swing.JPanel bg_back;
-    private javax.swing.JPanel bg_home;
     private javax.swing.JPanel bg_next;
     private javax.swing.JPanel bg_play;
     private javax.swing.JPanel bg_random;
     private javax.swing.JPanel bg_stop;
     private javax.swing.JPanel bg_upload;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
