@@ -44,8 +44,8 @@ public class Mainboard extends javax.swing.JFrame {
         updateList();
     }
 
-    void playSelectedSong() {
-        int selectedIndex = Music_list.getSelectedIndex();
+    void playSelectedSong(int play) {
+        int selectedIndex = play;   //Music_list.getSelectedIndex();
         if (selectedIndex != -1) {
             File selectedSongFile = pl.getSongList().get(selectedIndex);
 
@@ -85,9 +85,16 @@ public class Mainboard extends javax.swing.JFrame {
                     isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
                     isPause = 0; // รีเซ็ต isPause
                 }
+                playSelectedSong(selectedIndex);
+            } else {
+                if (isPlaying) {
+                    isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
+                    isPause = 1; // รีเซ็ต isPause
+                }
+                playSelectedSong(selectedIndex);
             }
         }
-        playSelectedSong(); // เรียกฟังก์ชันเล่นเพลงที่ผู้ใช้เลือก
+//        playSelectedSong(); // เรียกฟังก์ชันเล่นเพลงที่ผู้ใช้เลือก
     }
 
     void stop() {
@@ -110,9 +117,11 @@ public class Mainboard extends javax.swing.JFrame {
     void playRandomSong() {
         if (!pl.getSongList().isEmpty()) {
             int randomIndex = (int) (Math.random() * pl.getSongList().size());
-            player.stop();
+            if (isPlaying) {
+                player.stop();
+            }
             Music_list.setSelectedIndex(randomIndex);
-            playSelectedSong();
+            playSelectedSong(randomIndex);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
             isPause = 0; // รีเซ็ต isPause
         }
@@ -123,7 +132,7 @@ public class Mainboard extends javax.swing.JFrame {
         if (selectedIndex < pl.getSongList().size() - 1) {
             player.stop();
             Music_list.setSelectedIndex(selectedIndex + 1);
-            playSelectedSong();
+            playSelectedSong(selectedIndex + 1);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
             isPause = 0; // รีเซ็ต isPause
         }
@@ -134,7 +143,7 @@ public class Mainboard extends javax.swing.JFrame {
         if (selectedIndex > 0) {
             player.stop();
             Music_list.setSelectedIndex(selectedIndex - 1);
-            playSelectedSong();
+            playSelectedSong(selectedIndex - 1);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
             isPause = 0; // รีเซ็ต isPause
         }
@@ -152,7 +161,6 @@ public class Mainboard extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         Slide_home = new javax.swing.JPanel();
-        Slide_music = new javax.swing.JPanel();
         bg_home = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         bg_Logout = new javax.swing.JPanel();
@@ -288,20 +296,6 @@ public class Mainboard extends javax.swing.JFrame {
             .addGap(0, 3, Short.MAX_VALUE)
         );
 
-        Slide_music.setBackground(new java.awt.Color(147, 112, 219));
-        Slide_music.setPreferredSize(new java.awt.Dimension(150, 3));
-
-        javax.swing.GroupLayout Slide_musicLayout = new javax.swing.GroupLayout(Slide_music);
-        Slide_music.setLayout(Slide_musicLayout);
-        Slide_musicLayout.setHorizontalGroup(
-            Slide_musicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
-        );
-        Slide_musicLayout.setVerticalGroup(
-            Slide_musicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 3, Short.MAX_VALUE)
-        );
-
         bg_home.setBackground(new java.awt.Color(147, 112, 219));
 
         jLabel2.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
@@ -336,7 +330,7 @@ public class Mainboard extends javax.swing.JFrame {
             bg_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bg_homeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -385,7 +379,6 @@ public class Mainboard extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Slide_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Slide_music, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(bg_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(bg_Logout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -395,11 +388,9 @@ public class Mainboard extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(bg_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Slide_home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addComponent(Slide_music, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
                 .addComponent(bg_Logout, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -766,6 +757,18 @@ public class Mainboard extends javax.swing.JFrame {
         }
     }
 
+    private boolean checkExited = false;
+
+    public void checkAction(JPanel p1, JPanel p2, int n_check) {
+        if (n_check == 1) {
+            p1.setBackground(new Color(193, 193, 213));
+            p2.setBackground(new Color(237, 241, 250));
+        } else {
+            p1.setBackground(new Color(237, 241, 250));
+            p2.setBackground(new Color(193, 193, 213));
+        }
+    }
+
     private int xMouse, yMouse;
     private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
         // TODO add your handling code here:
@@ -795,7 +798,6 @@ public class Mainboard extends javax.swing.JFrame {
         new Login().setVisible(true);
         player.stop();
         this.dispose();
-        checkslide(bg_Logout, bg_home, 1);
     }//GEN-LAST:event_Logout_btnMouseClicked
 
     private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
@@ -804,8 +806,7 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseEntered
 
     private void Logout_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Logout_btnMouseEntered
-        // TODO add your handling code here:
-        changecoler(Slide_music, new Color(218, 112, 214));
+
     }//GEN-LAST:event_Logout_btnMouseEntered
 
     private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
@@ -814,17 +815,14 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseExited
 
     private void Logout_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Logout_btnMouseExited
-        // TODO add your handling code here:
-        changecoler(Slide_music, new Color(147, 112, 219));
+
     }//GEN-LAST:event_Logout_btnMouseExited
 
     private void uploadMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uploadMouseEntered
-        // TODO add your handling code here:
         changecoler(bg_upload, new Color(224, 238, 249));
     }//GEN-LAST:event_uploadMouseEntered
 
     private void uploadMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uploadMouseExited
-        // TODO add your handling code here:
         changecoler(bg_upload, new Color(245, 245, 245));
     }//GEN-LAST:event_uploadMouseExited
 
@@ -854,8 +852,11 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_Stop_btnMouseEntered
 
     private void Stop_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseExited
-        // TODO add your handling code here:
-        changecoler(bg_stop, new Color(237, 241, 250));
+        if (!checkExited) {
+            changecoler(bg_stop, new Color(237, 241, 250));
+        } else {
+            checkExited = false;
+        }
     }//GEN-LAST:event_Stop_btnMouseExited
 
     private void Random_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Random_btnMouseEntered
@@ -873,7 +874,11 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_play_btnMouseEntered
 
     private void play_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseExited
-        changecoler(bg_play, new Color(237, 241, 250));
+        if (!checkExited) {
+            changecoler(bg_play, new Color(237, 241, 250));
+        } else {
+            checkExited = false;
+        }
     }//GEN-LAST:event_play_btnMouseExited
 
     private void uploadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uploadMouseClicked
@@ -882,10 +887,14 @@ public class Mainboard extends javax.swing.JFrame {
 
     private void play_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseClicked
         changeSong();
+        checkAction(bg_play, bg_stop, 1);
+        checkExited = true;
     }//GEN-LAST:event_play_btnMouseClicked
 
     private void Stop_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseClicked
         stop();
+        checkAction(bg_stop, bg_play, 1);
+        checkExited = true;
     }//GEN-LAST:event_Stop_btnMouseClicked
 
     private void Next_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Next_btnMouseClicked
@@ -901,7 +910,7 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_Random_btnMouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        
+
     }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
@@ -955,7 +964,6 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JLabel Next_btn;
     private javax.swing.JLabel Random_btn;
     private javax.swing.JPanel Slide_home;
-    private javax.swing.JPanel Slide_music;
     private javax.swing.JLabel Stop_btn;
     private javax.swing.JTabbedPane Table_page;
     private javax.swing.JPanel bg_Logout;
