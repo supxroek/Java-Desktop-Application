@@ -130,7 +130,9 @@ public class Mainboard extends javax.swing.JFrame {
     void playNextSong() {
         int selectedIndex = Music_list.getSelectedIndex();
         if (selectedIndex < pl.getSongList().size() - 1) {
-            player.stop();
+            if (isPlaying) {
+                player.stop();
+            }
             Music_list.setSelectedIndex(selectedIndex + 1);
             playSelectedSong(selectedIndex + 1);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
@@ -141,7 +143,9 @@ public class Mainboard extends javax.swing.JFrame {
     void playPreviousSong() {
         int selectedIndex = Music_list.getSelectedIndex();
         if (selectedIndex > 0) {
-            player.stop();
+            if (isPlaying) {
+                player.stop();
+            }
             Music_list.setSelectedIndex(selectedIndex - 1);
             playSelectedSong(selectedIndex - 1);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
