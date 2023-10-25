@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import jaco.mp3.player.MP3Player;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -130,27 +132,27 @@ public class Mainboard extends javax.swing.JFrame {
     void playNextSong() {
         int selectedIndex = Music_list.getSelectedIndex();
         if (selectedIndex < pl.getSongList().size() - 1) {
-            if (isPlaying) {
-                player.stop();
-            }
+            player.stop();
             Music_list.setSelectedIndex(selectedIndex + 1);
-            playSelectedSong(selectedIndex + 1);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
             isPause = 0; // รีเซ็ต isPause
         }
+        playSelectedSong(selectedIndex + 1);
+        checkAction(bg_play, bg_stop, 1);
+        checkExited = true;
     }
 
     void playPreviousSong() {
         int selectedIndex = Music_list.getSelectedIndex();
         if (selectedIndex > 0) {
-            if (isPlaying) {
-                player.stop();
-            }
+            player.stop();
             Music_list.setSelectedIndex(selectedIndex - 1);
-            playSelectedSong(selectedIndex - 1);
             isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
             isPause = 0; // รีเซ็ต isPause
         }
+        playSelectedSong(selectedIndex - 1);
+        checkAction(bg_play, bg_stop, 1);
+        checkExited = true;
     }
 
     @SuppressWarnings("unchecked")
@@ -851,8 +853,11 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_Back_btnMouseExited
 
     private void Stop_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseEntered
-        // TODO add your handling code here:
-        changecoler(bg_stop, new Color(225, 225, 248));
+        if (checkExited) {
+            changecoler(bg_stop, new Color(225, 225, 248));
+        } else {
+            checkExited = true;
+        }
     }//GEN-LAST:event_Stop_btnMouseEntered
 
     private void Stop_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Stop_btnMouseExited
@@ -874,7 +879,12 @@ public class Mainboard extends javax.swing.JFrame {
     }//GEN-LAST:event_Random_btnMouseExited
 
     private void play_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseEntered
-        changecoler(bg_play, new Color(225, 225, 248));
+        if (checkExited) {
+            changecoler(bg_play, new Color(225, 225, 248));
+        } else {
+            checkExited = true;
+            changecoler(bg_play, new Color(225, 225, 248));
+        }
     }//GEN-LAST:event_play_btnMouseEntered
 
     private void play_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_play_btnMouseExited
