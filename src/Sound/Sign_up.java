@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package Sound;
 
 import java.io.FileWriter;
@@ -284,31 +281,26 @@ public class Sign_up extends javax.swing.JFrame {
 
     private int xMouse, yMouse;
     private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
-        // TODO add your handling code here:
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         setLocation(x - xMouse, y - yMouse);
     }//GEN-LAST:event_jPanel1MouseDragged
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-        // TODO add your handling code here:
         xMouse = evt.getX();
         yMouse = evt.getY();
     }//GEN-LAST:event_jPanel1MousePressed
 
     private void New_userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_New_userMouseClicked
-        // TODO add your handling code here:
         New_user.setText("");
     }//GEN-LAST:event_New_userMouseClicked
 
     private void New_passMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_New_passMouseClicked
-        // TODO add your handling code here:
         New_pass.setText("");
     }//GEN-LAST:event_New_passMouseClicked
 
     private void Conf_passMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Conf_passMouseClicked
-        // TODO add your handling code here:
-        Conf_pass.setText("");
+       Conf_pass.setText("");
     }//GEN-LAST:event_Conf_passMouseClicked
     
     //private String new_user, new_pass, new_passconf;
@@ -316,19 +308,19 @@ public class Sign_up extends javax.swing.JFrame {
         // TODO add your handling code here:
         // ตรวจสอบว่าชื่อผู้ใช้ว่างหรือไม่
         if (New_user.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "กรุณากรอกชื่อผู้ใช้!", "คำเตือน", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter a username!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // ตรวจสอบว่ารหัสผ่านว่างหรือไม่
         if (New_pass.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "กรุณากรอกรหัสผ่าน!", "คำเตือน", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter password!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // ตรวจสอบว่ารหัสผ่านตรงกันหรือไม่
         if (!New_pass.getText().equals(Conf_pass.getText())) {
-            JOptionPane.showMessageDialog(this, "รหัสผ่านของคุณไม่ตรงกัน!", "ข้อผิดพลาด", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Your passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -342,7 +334,7 @@ public class Sign_up extends javax.swing.JFrame {
             writer.close();
 
             // แสดงข้อความแจ้งว่าลงทะเบียนสำเร็จ
-            JOptionPane.showMessageDialog(this, "ลงทะเบียนสำเร็จ!", "ดีใจด้วย!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Registration Successful!", "ดีใจด้วย!", JOptionPane.INFORMATION_MESSAGE);
 
             // ปิดหน้า register
             new Login().setVisible(true);

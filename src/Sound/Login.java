@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package Sound;
 
 import java.io.BufferedReader;
@@ -308,7 +305,7 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         // ตรวจสอบว่าชื่อผู้ใช้ว่างหรือไม่
         if (User_txt.getText().isEmpty() || Pass_txt.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "กรุณากรอกชื่อผู้ใช้และรหัสผ่าน!", "คำเตือน", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter your username and password!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -337,13 +334,13 @@ public class Login extends javax.swing.JFrame {
             reader.close();
 
             if (loginSuccess) {
-                JOptionPane.showMessageDialog(this, "เข้าสู่ระบบสำเร็จ!", "ยินดีต้อนรับ", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Login successful!", "Welcome", JOptionPane.INFORMATION_MESSAGE);
 
                 // ปิดหน้า login
                 new Mainboard().setVisible(true);
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "ชื่อผู้ใช้หรือรหัสผ่านของคุณไม่ถูกต้อง!", "ข้อผิดพลาด", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Your username or password is incorrect!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException ex) {
             ex.printStackTrace();

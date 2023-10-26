@@ -44,6 +44,7 @@ public class Playlist {
                 // The folderPath is already in preferences
                 // You can handle this case as needed (e.g., show a notification)
             } else {
+                addedFolders.add(folderPath);
                 saveFolderPathToPreferences(dir);
                 loadSongsFromFolder(dir);
                 updateList();
