@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import jaco.mp3.player.MP3Player;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,26 +52,6 @@ public class Mainboard extends javax.swing.JFrame {
 
                     player = new MP3Player(selectedSongFile);
                     player.play();
-
-                    // ตรวจสอบเมื่อเพลงเล่นเสร็จ
-                    Thread completionChecker = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (true) {
-                                if (player.isStopped()) {
-                                    playNextSong();
-                                    break;
-                                }
-                                try {
-                                    Thread.sleep(100); // ตรวจสอบสถานะทุก 100 มิลลิวินาที
-                                } catch (InterruptedException e) {
-                                }
-                            }
-                        }
-                    });
-
-                    completionChecker.start();
-
                     nameMusic.setText(selectedSongFile.getName());
 
                     currentlyPlayingFile = selectedSongFile;
@@ -215,6 +196,10 @@ public class Mainboard extends javax.swing.JFrame {
         Add_btn = new javax.swing.JLabel();
         Delete_btn = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -868,36 +853,60 @@ public class Mainboard extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(237, 241, 250));
 
+        jTextArea1.setBackground(new java.awt.Color(237, 241, 250));
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Kanit", 0, 14)); // NOI18N
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Member\n1. Mr. Suparoek Manajit, student ID 6511130022\n2. Mr. Jirayu Phakaedam, student ID 6511130020\n\nสมาชิก\n1. นาย ศุภฤกษ์ มานะจิตต์ รหัสนักศึกษา 6511130022\n2. นาย จิรายุ ภาแกดำ รหัสนักศึกษา 6511130020");
+        jScrollPane2.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
         );
+
+        jLabel2.setFont(new java.awt.Font("Kanit", 1, 14)); // NOI18N
+        jLabel2.setText("Libary");
+
+        jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
+        jLabel3.setText("About");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+            .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(25, 25, 25))
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(25, 25, 25))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         Setting_page.add(jPanel10, java.awt.BorderLayout.CENTER);
@@ -1044,8 +1053,7 @@ public class Mainboard extends javax.swing.JFrame {
                 Locations_list.addItem(folderPath); // เพิ่มที่อยู่โฟลเดอร์ใน Locations_list
                 pl.updateList(); // อัพเดทรายการเพลง
             } else {
-                // ที่อยู่โฟลเดอร์มีอยู่แล้ว
-                // คุณสามารถแจ้งเตือนหรือไม่ทำอะไรตามความต้องการ
+                JOptionPane.showMessageDialog(this, "Please select another location and try again");
             }
         }
     }//GEN-LAST:event_uploadMouseClicked
@@ -1086,19 +1094,23 @@ public class Mainboard extends javax.swing.JFrame {
     private void Add_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Add_btnMouseClicked
         String folderPath = Folder_locations.getText(); // Assuming Folder_locations is the JTextField for folder path
 
-        // Check if the folder path already exists in the list
-        boolean folderExists = false;
-        for (int i = 0; i < Locations_list.getItemCount(); i++) {
-            if (Locations_list.getItemAt(i).equals(folderPath)) {
-                folderExists = true;
-                break;
+        if (!Folder_locations.getText().isEmpty()) {
+            // Check if the folder path already exists in the list
+            boolean folderExists = false;
+            for (int i = 0; i < Locations_list.getItemCount(); i++) {
+                if (Locations_list.getItemAt(i).equals(folderPath)) {
+                    folderExists = true;
+                    break;
+                }
             }
-        }
 
-        if (!folderExists) {
-            Locations_list.addItem(folderPath);
-            pl.setDefaultFolderPath(folderPath);
-            pl.updateList();
+            if (!folderExists) {
+                Locations_list.addItem(folderPath);
+                pl.setDefaultFolderPath(folderPath);
+                pl.updateList();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please enter a folder path address.");
         }
     }//GEN-LAST:event_Add_btnMouseClicked
 
@@ -1112,6 +1124,9 @@ public class Mainboard extends javax.swing.JFrame {
             if (song.getAbsolutePath().startsWith(selectedFolder)) {
                 songsToRemove.add(song);
             }
+        }
+        if (isPlaying) {
+            player.stop();
         }
         pl.getSongList().removeAll(songsToRemove);
         pl.updateList();
@@ -1189,6 +1204,8 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JPanel bg_stop;
     private javax.swing.JPanel bg_upload;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1206,6 +1223,8 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel nameMusic;
     private javax.swing.JLabel play_btn;
     private javax.swing.JLabel upload;
