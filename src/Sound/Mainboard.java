@@ -23,6 +23,7 @@ public class Mainboard extends javax.swing.JFrame {
 
     public Mainboard() {
         initComponents();
+
         listModel = new DefaultListModel<>(); // Initialize listModel
         Music_list.setModel(listModel);
         pl = new Playlist(listModel); // Pass the listModel to the Playlist constructor
@@ -32,10 +33,11 @@ public class Mainboard extends javax.swing.JFrame {
         if (savedFolderPath != null) {
             Locations_list.addItem(savedFolderPath);
         }
+
     }
 
     void playSelectedSong(int play) {
-        int selectedIndex = play;   //Music_list.getSelectedIndex();
+        int selectedIndex = play;
         if (selectedIndex != -1) {
             File selectedSongFile = pl.getSongList().get(selectedIndex);
 
@@ -49,6 +51,26 @@ public class Mainboard extends javax.swing.JFrame {
 
                     player = new MP3Player(selectedSongFile);
                     player.play();
+
+                    // ตรวจสอบเมื่อเพลงเล่นเสร็จ
+                    Thread completionChecker = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (true) {
+                                if (player.isStopped()) {
+                                    playNextSong();
+                                    break;
+                                }
+                                try {
+                                    Thread.sleep(100); // ตรวจสอบสถานะทุก 100 มิลลิวินาที
+                                } catch (InterruptedException e) {
+                                }
+                            }
+                        }
+                    });
+
+                    completionChecker.start();
+
                     nameMusic.setText(selectedSongFile.getName());
 
                     currentlyPlayingFile = selectedSongFile;
@@ -89,17 +111,19 @@ public class Mainboard extends javax.swing.JFrame {
 
     void stop() {
         int selectedIndex = Music_list.getSelectedIndex();
-        if (selectedIndex != -1) {
-            File selectedSongFile = pl.getSongList().get(selectedIndex);
+        if (isPlaying) {
+            if (selectedIndex != -1) {
+                File selectedSongFile = pl.getSongList().get(selectedIndex);
 
-            if (currentlyPlayingFile != null && !selectedSongFile.equals(currentlyPlayingFile)) {
-                player.stop();
-                isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
-                isPause = 0; // รีเซ็ต isPause
-            } else {
-                player.pause();
-                isCheck = 0;
-                isPause = 1;
+                if (currentlyPlayingFile != null && !selectedSongFile.equals(currentlyPlayingFile)) {
+                    player.stop();
+                    isCheck = 0; // รีเซ็ต isCheck เพื่อให้ผู้ใช้สามารถเล่นเพลงใหม่
+                    isPause = 0; // รีเซ็ต isPause
+                } else {
+                    player.pause();
+                    isCheck = 0;
+                    isPause = 1;
+                }
             }
         }
     }
@@ -148,7 +172,6 @@ public class Mainboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         Slide_music = new javax.swing.JPanel();
         bg_Music = new javax.swing.JPanel();
@@ -247,19 +270,13 @@ public class Mainboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimize.png"))); // NOI18N
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 646, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 670, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -268,9 +285,7 @@ public class Mainboard extends javax.swing.JFrame {
             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1)
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -839,10 +854,11 @@ public class Mainboard extends javax.swing.JFrame {
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Folder_locations, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(Add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Locations_list)
@@ -860,7 +876,7 @@ public class Mainboard extends javax.swing.JFrame {
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 180, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
@@ -881,7 +897,7 @@ public class Mainboard extends javax.swing.JFrame {
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         Setting_page.add(jPanel10, java.awt.BorderLayout.CENTER);
@@ -1173,7 +1189,6 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JPanel bg_stop;
     private javax.swing.JPanel bg_upload;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
