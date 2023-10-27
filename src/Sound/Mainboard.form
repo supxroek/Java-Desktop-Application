@@ -966,6 +966,7 @@
                               <Image iconType="3" name="/images/inbox.png"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="Upload"/>
+                            <Property name="toolTipText" type="java.lang.String" value="&#xe2b;&#xe32;&#xe01;&#xe44;&#xe21;&#xe48;&#xe2a;&#xe32;&#xe21;&#xe32;&#xe23;&#xe16;&#xe40;&#xe1e;&#xe34;&#xe48;&#xe21;&#xe42;&#xe1f;&#xe25;&#xe40;&#xe14;&#xe2d;&#xe23;&#xe4c;&#xe40;&#xe1e;&#xe25;&#xe07;&#xe44;&#xe14;&#xe49; &#xe43;&#xe2b;&#xe49;&#xe17;&#xe33;&#xe01;&#xe32;&#xe23;&#xe40;&#xe1e;&#xe34;&#xe48;&#xe21;&#xe42;&#xe1f;&#xe25;&#xe40;&#xe14;&#xe2d;&#xe23;&#xe4c;&#xe2d;&#xe37;&#xe48;&#xe19;(&#xe2d;&#xe30;&#xe44;&#xe23;&#xe01;&#xe47;&#xe44;&#xe14;&#xe49;)&#xe01;&#xe48;&#xe2d;&#xe19; &#xe41;&#xe25;&#xe49;&#xe27;&#xe04;&#xe48;&#xe2d;&#xe22;&#xe40;&#xe1e;&#xe34;&#xe48;&#xe21;&#xe42;&#xe1f;&#xe25;&#xe40;&#xe14;&#xe2d;&#xe23;&#xe4c;&#xe17;&#xe35;&#xe48;&#xe15;&#xe49;&#xe2d;&#xe07;&#xe01;&#xe32;&#xe23;&#xe2d;&#xe35;&#xe01;&#xe04;&#xe23;&#xe31;&#xe49;&#xe07;!!!"/>
                           </Properties>
                           <Events>
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="uploadMouseClicked"/>

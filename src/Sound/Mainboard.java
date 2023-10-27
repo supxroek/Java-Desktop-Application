@@ -34,10 +34,11 @@ public class Mainboard extends javax.swing.JFrame {
         if (savedFolderPath != null) {
             Locations_list.addItem(savedFolderPath);
         }
-
+        
     }
 
-    void playSelectedSong(int play) {
+    void playSelectedSong(int play
+    ) {
         int selectedIndex = play;
         if (selectedIndex != -1) {
             File selectedSongFile = pl.getSongList().get(selectedIndex);
@@ -752,6 +753,7 @@ public class Mainboard extends javax.swing.JFrame {
         upload.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         upload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inbox.png"))); // NOI18N
         upload.setText("Upload");
+        upload.setToolTipText("หากไม่สามารถเพิ่มโฟลเดอร์เพลงได้ ให้ทำการเพิ่มโฟลเดอร์อื่น(อะไรก็ได้)ก่อน แล้วค่อยเพิ่มโฟลเดอร์ที่ต้องการอีกครั้ง!!!");
         upload.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 uploadMouseClicked(evt);
@@ -1052,8 +1054,6 @@ public class Mainboard extends javax.swing.JFrame {
             if (!folderExists) {
                 Locations_list.addItem(folderPath); // เพิ่มที่อยู่โฟลเดอร์ใน Locations_list
                 pl.updateList(); // อัพเดทรายการเพลง
-            } else {
-                JOptionPane.showMessageDialog(this, "Please select another location and try again");
             }
         }
     }//GEN-LAST:event_uploadMouseClicked
