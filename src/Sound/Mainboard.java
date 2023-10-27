@@ -225,6 +225,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/close.png"))); // NOI18N
+        jLabel1.setToolTipText("CLOSE");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -302,6 +303,7 @@ public class Mainboard extends javax.swing.JFrame {
         Music_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Music_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/disc.png"))); // NOI18N
         Music_btn.setText("MUSIC");
+        Music_btn.setToolTipText("");
         Music_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Music_btn.setPreferredSize(new java.awt.Dimension(39, 50));
         Music_btn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -515,6 +517,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         play_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         play_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play-button.png"))); // NOI18N
+        play_btn.setToolTipText("PLAY");
         play_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         play_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -548,6 +551,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         Next_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Next_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/next.png"))); // NOI18N
+        Next_btn.setToolTipText("NEXT");
         Next_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Next_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -581,6 +585,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         Back_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Back_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/previous.png"))); // NOI18N
+        Back_btn.setToolTipText("PREVIOUS");
         Back_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Back_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -613,6 +618,7 @@ public class Mainboard extends javax.swing.JFrame {
         Stop_btn.setBackground(new java.awt.Color(237, 241, 250));
         Stop_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Stop_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause.png"))); // NOI18N
+        Stop_btn.setToolTipText("PAUSE");
         Stop_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Stop_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -642,6 +648,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         Random_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Random_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/random.png"))); // NOI18N
+        Random_btn.setToolTipText("RANDOM");
         Random_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Random_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

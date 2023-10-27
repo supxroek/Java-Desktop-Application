@@ -101,6 +101,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/images/close.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="CLOSE"/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel1MouseClicked"/>
@@ -276,6 +277,7 @@
                       <Image iconType="3" name="/images/disc.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="MUSIC"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                       <Color id="Default Cursor"/>
                     </Property>
@@ -653,6 +655,7 @@
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                               <Image iconType="3" name="/images/play-button.png"/>
                             </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="PLAY"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[40, 40]"/>
                             </Property>
@@ -700,6 +703,7 @@
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                               <Image iconType="3" name="/images/next.png"/>
                             </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="NEXT"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[40, 40]"/>
                             </Property>
@@ -744,6 +748,7 @@
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                               <Image iconType="3" name="/images/previous.png"/>
                             </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="PREVIOUS"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[40, 40]"/>
                             </Property>
@@ -788,6 +793,7 @@
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                               <Image iconType="3" name="/images/pause.png"/>
                             </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="PAUSE"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[40, 40]"/>
                             </Property>
@@ -832,6 +838,7 @@
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                               <Image iconType="3" name="/images/random.png"/>
                             </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="RANDOM"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[40, 40]"/>
                             </Property>
