@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import jaco.mp3.player.MP3Player;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +26,8 @@ public class Mainboard extends javax.swing.JFrame {
 
     public Mainboard() {
         initComponents();
+        Image image = new ImageIcon(this.getClass().getResource("/images/spotify.png")).getImage();
+        this.setIconImage(image);
 
         listModel = new DefaultListModel<>(); // Initialize listModel
         Music_list.setModel(listModel);
@@ -34,7 +38,7 @@ public class Mainboard extends javax.swing.JFrame {
         if (savedFolderPath != null) {
             Locations_list.addItem(savedFolderPath);
         }
-        
+
     }
 
     void playSelectedSong(int play
@@ -166,7 +170,7 @@ public class Mainboard extends javax.swing.JFrame {
         Slide_setting = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        imagePlayer = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         nameMusic = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -205,7 +209,7 @@ public class Mainboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
-        setType(java.awt.Window.Type.UTILITY);
+        setType(java.awt.Window.Type.POPUP);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(850, 500));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -225,6 +229,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/close.png"))); // NOI18N
+        jLabel1.setToolTipText("CLOSE");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -302,6 +307,7 @@ public class Mainboard extends javax.swing.JFrame {
         Music_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Music_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/disc.png"))); // NOI18N
         Music_btn.setText("MUSIC");
+        Music_btn.setToolTipText("");
         Music_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Music_btn.setPreferredSize(new java.awt.Dimension(39, 50));
         Music_btn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -469,8 +475,8 @@ public class Mainboard extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(225, 225, 248));
         jPanel5.setPreferredSize(new java.awt.Dimension(200, 100));
 
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/album (1).png"))); // NOI18N
+        imagePlayer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagePlayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/album (1).png"))); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Kanit", 0, 14)); // NOI18N
         jLabel5.setText("Unknown album");
@@ -484,7 +490,7 @@ public class Mainboard extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imagePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nameMusic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)))
@@ -495,7 +501,7 @@ public class Mainboard extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                        .addComponent(imagePlayer, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jLabel5)
@@ -515,6 +521,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         play_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         play_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play-button.png"))); // NOI18N
+        play_btn.setToolTipText("PLAY");
         play_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         play_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -548,6 +555,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         Next_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Next_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/next.png"))); // NOI18N
+        Next_btn.setToolTipText("NEXT");
         Next_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Next_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -581,6 +589,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         Back_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Back_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/previous.png"))); // NOI18N
+        Back_btn.setToolTipText("PREVIOUS");
         Back_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Back_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -613,6 +622,7 @@ public class Mainboard extends javax.swing.JFrame {
         Stop_btn.setBackground(new java.awt.Color(237, 241, 250));
         Stop_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Stop_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause.png"))); // NOI18N
+        Stop_btn.setToolTipText("PAUSE");
         Stop_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Stop_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -642,6 +652,7 @@ public class Mainboard extends javax.swing.JFrame {
 
         Random_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Random_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/random.png"))); // NOI18N
+        Random_btn.setToolTipText("RANDOM");
         Random_btn.setPreferredSize(new java.awt.Dimension(40, 40));
         Random_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -753,7 +764,7 @@ public class Mainboard extends javax.swing.JFrame {
         upload.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         upload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/inbox.png"))); // NOI18N
         upload.setText("Upload");
-        upload.setToolTipText("หากไม่สามารถเพิ่มโฟลเดอร์เพลงได้ ให้ทำการเพิ่มโฟลเดอร์อื่น(อะไรก็ได้)ก่อน แล้วค่อยเพิ่มโฟลเดอร์ที่ต้องการอีกครั้ง!!!");
+        upload.setToolTipText("If you can't add a music folder, first add another folder (anything) and then add the desired folder again!!");
         upload.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 uploadMouseClicked(evt);
@@ -1203,10 +1214,10 @@ public class Mainboard extends javax.swing.JFrame {
     private javax.swing.JPanel bg_random;
     private javax.swing.JPanel bg_stop;
     private javax.swing.JPanel bg_upload;
+    private javax.swing.JLabel imagePlayer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
