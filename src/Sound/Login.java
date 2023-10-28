@@ -1,9 +1,11 @@
 package Sound;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -15,6 +17,9 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        Image image = new ImageIcon(this.getClass().getResource("/images/spotify.png")).getImage();
+        this.setIconImage(image);
+        
         addStyle(User_txt);
         addStyle(Pass_txt);
     }
@@ -53,7 +58,7 @@ public class Login extends javax.swing.JFrame {
         setUndecorated(true);
         setResizable(false);
         setSize(new java.awt.Dimension(550, 350));
-        setType(java.awt.Window.Type.UTILITY);
+        setType(java.awt.Window.Type.POPUP);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -430,7 +435,7 @@ public class Login extends javax.swing.JFrame {
         if (Showpass.isSelected()) {
             Pass_txt.setEchoChar('\u0000');
         } else {
-            
+
             Pass_txt.setEchoChar('*');
         }
     }//GEN-LAST:event_ShowpassActionPerformed
@@ -466,6 +471,7 @@ public class Login extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
+
             }
         });
     }

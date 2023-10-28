@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,6 +19,9 @@ public class Sign_up extends javax.swing.JFrame {
      */
     public Sign_up() {
         initComponents();
+        Image image = new ImageIcon(this.getClass().getResource("/images/spotify.png")).getImage();
+        this.setIconImage(image);
+        
         addStyle(New_user);
         addStyle(New_pass);
         addStyle(Conf_pass);
@@ -55,7 +60,7 @@ public class Sign_up extends javax.swing.JFrame {
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(550, 350));
         setSize(new java.awt.Dimension(550, 350));
-        setType(java.awt.Window.Type.UTILITY);
+        setType(java.awt.Window.Type.POPUP);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
