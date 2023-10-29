@@ -21,7 +21,7 @@ public class Register extends javax.swing.JFrame {
         initComponents();
         Image image = new ImageIcon(this.getClass().getResource("/images/spotify.png")).getImage();
         this.setIconImage(image);
-        
+
         addStyle(New_user);
         addStyle(New_pass);
         addStyle(Conf_pass);
@@ -436,12 +436,14 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void ShowpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowpassActionPerformed
-        if (Showpass.isSelected()) {
-            New_pass.setEchoChar('\u0000');
-            Conf_pass.setEchoChar('\u0000');
-        } else {
-            New_pass.setEchoChar('\u2022');
-            Conf_pass.setEchoChar('\u2022');
+        if (!New_pass.getText().equals("PASSWORD") && !Conf_pass.getText().equals("CONFIRM")) {
+            if (Showpass.isSelected()) {
+                New_pass.setEchoChar('\u0000');
+                Conf_pass.setEchoChar('\u0000');
+            } else {
+                New_pass.setEchoChar('\u2022');
+                Conf_pass.setEchoChar('\u2022');
+            }
         }
     }//GEN-LAST:event_ShowpassActionPerformed
 

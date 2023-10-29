@@ -19,7 +19,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         Image image = new ImageIcon(this.getClass().getResource("/images/spotify.png")).getImage();
         this.setIconImage(image);
-        
+
         addStyle(User_txt);
         addStyle(Pass_txt);
     }
@@ -432,11 +432,13 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void ShowpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowpassActionPerformed
-        if (Showpass.isSelected()) {
-            Pass_txt.setEchoChar('\u0000');
-        } else {
+        if (!Pass_txt.getText().equals("PASSWORD")) {
+            if (Showpass.isSelected()) {
+                Pass_txt.setEchoChar('\u0000');
+            } else {
 
-            Pass_txt.setEchoChar('*');
+                Pass_txt.setEchoChar('*');
+            }
         }
     }//GEN-LAST:event_ShowpassActionPerformed
 
