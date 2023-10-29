@@ -339,7 +339,7 @@ public class Login extends javax.swing.JFrame {
 
     private void Signup_lbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Signup_lbMouseClicked
         // TODO add your handling code here:
-        new Sign_up().setVisible(true);
+        new Register().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Signup_lbMouseClicked
 

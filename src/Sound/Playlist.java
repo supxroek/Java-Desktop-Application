@@ -65,6 +65,10 @@ public class Playlist {
         // Save the selected folder path to preferences
         preferences.put("folderPath", folder.getAbsolutePath());
     }
+    
+    public ArrayList<File> getSongList() {
+        return songList;
+    }
 
     private void loadSongsFromFolder(File folder) {
         File[] files = folder.listFiles(new FilenameFilter() {
@@ -79,10 +83,6 @@ public class Playlist {
                 updateList();
             }
         }
-    }
-
-    public ArrayList<File> getSongList() {
-        return songList;
     }
 
     public void setDefaultFolderPath(String folderPath) {
