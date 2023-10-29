@@ -92,7 +92,6 @@ public class Mainboard extends javax.swing.JFrame {
                 playSelectedSong(selectedIndex);
             }
         }
-//        playSelectedSong(); // เรียกฟังก์ชันเล่นเพลงที่ผู้ใช้เลือก
     }
 
     void stop() {
