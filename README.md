@@ -1,1 +1,1 @@
-# Mini Project: Java Desktop Application as a Simple Music Player
+#### Mini Project: Java Desktop Application as a Simple Music Player
